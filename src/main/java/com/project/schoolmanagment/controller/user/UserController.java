@@ -7,6 +7,7 @@ import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.payload.response.user.UserResponse;
 import com.project.schoolmanagment.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +63,11 @@ public class UserController {
     @PutMapping("/update/{userId}")
     public ResponseMessage<BaseUserResponse> updateAdminDeanViceDean(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest){
         return userService.updateAdminViceDean(userId, userRequest);
+    }
+
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId, HttpServletRequest httpServletRequest){
+        return ResponseEntity.ok(userService.deleteUser(userId, httpServletRequest));
     }
 
 }
