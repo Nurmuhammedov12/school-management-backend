@@ -8,6 +8,7 @@ import com.project.schoolmanagment.payload.mappers.UserMapper;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.payload.messages.SuccesMessages;
 import com.project.schoolmanagment.payload.request.user.UserRequest;
+import com.project.schoolmanagment.payload.request.user.UserWithoutPasswordRequest;
 import com.project.schoolmanagment.payload.response.abstracts.BaseUserResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.payload.response.user.UserResponse;
@@ -18,9 +19,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -87,6 +91,12 @@ public class UserService {
                 .stream()
                 .map(userMapper::mapperResponseUser)
                 .collect(Collectors.toList());
+
+    }
+
+    public ResponseEntity<Map<String, String>> updateUser(UserWithoutPasswordRequest userWithoutPassword, HttpServletRequest servletRequest) {
+    User user = (User) servletRequest.getAttribute("username");
+
 
     }
 }

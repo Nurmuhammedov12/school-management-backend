@@ -1,6 +1,7 @@
 package com.project.schoolmanagment.controller.user;
 
 import com.project.schoolmanagment.payload.request.user.UserRequest;
+import com.project.schoolmanagment.payload.request.user.UserWithoutPasswordRequest;
 import com.project.schoolmanagment.payload.response.abstracts.BaseUserResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.payload.response.user.UserResponse;
@@ -11,8 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,14 @@ public class UserController {
     @GetMapping("/getUserByName")
     public List<UserResponse> getUserByName(@RequestParam(name = "userName") String userName){
         return userService.getUserByUserName(userName);
+    }
+
+    @PatchMapping("/updateUser")
+    public ResponseEntity<Map<String, String>> updateUser(@RequestBody @Valid
+                                                              UserWithoutPasswordRequest userWithoutPassword,
+                                                          HttpServletRequest servletRequest){
+
+        return userService.updateUser(userWithoutPassword, servletRequest);
     }
 
 }
