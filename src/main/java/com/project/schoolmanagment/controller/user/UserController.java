@@ -59,7 +59,8 @@ public class UserController {
         return userService.updateUser(userWithoutPassword, servletRequest);
     }
 
-    public ResponseEntity<ResponseMessage<BaseUserResponse>> updateAdminDeanViceDean(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest){
+    @PutMapping("/update/{userId}")
+    public ResponseMessage<BaseUserResponse> updateAdminDeanViceDean(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest){
         return userService.updateAdminViceDean(userId, userRequest);
     }
 
