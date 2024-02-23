@@ -97,7 +97,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> updateUser(UserWithoutPasswordRequest userWithoutPassword, HttpServletRequest servletRequest) {
-    String username = (String) servletRequest.getAttribute("username");
+    String username = (String) servletRequest.getHeader("username");
     User user = userRepository.findByUsername(username);
 
     //checkBuiltIn
@@ -120,6 +120,14 @@ public class UserService {
         userRepository.save(user);
         return  ResponseEntity.ok(SuccesMessages.USER_UPDATE_MESSAGE);
 
+    }
+
+    public ResponseEntity<ResponseMessage<BaseUserResponse>> updateAdminViceDean(Long userId, UserRequest userRequest) {
+        //check Id exist in database
+       User user = metodHelper.idUserExist(userId);
+       // check user builtIn
+       metodHelper.checkBuiltIn(user);
+       return null;
 
     }
 }

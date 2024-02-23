@@ -56,8 +56,11 @@ public class UserController {
     public ResponseEntity<String> updateUser(@RequestBody @Valid
                                                               UserWithoutPasswordRequest userWithoutPassword,
                                                           HttpServletRequest servletRequest){
-
         return userService.updateUser(userWithoutPassword, servletRequest);
+    }
+
+    public ResponseEntity<ResponseMessage<BaseUserResponse>> updateAdminDeanViceDean(@PathVariable Long userId, @RequestBody @Valid UserRequest userRequest){
+        return userService.updateAdminViceDean(userId, userRequest);
     }
 
 }
