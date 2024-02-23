@@ -3,6 +3,7 @@ package com.project.schoolmanagment.service.user;
 import com.project.schoolmanagment.entity.concretes.user.User;
 import com.project.schoolmanagment.entity.concretes.user.UserRole;
 import com.project.schoolmanagment.entity.enums.RoleType;
+import com.project.schoolmanagment.exception.BadRequest_exception;
 import com.project.schoolmanagment.exception.NotFoundExceptions;
 import com.project.schoolmanagment.payload.mappers.UserMapper;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -140,5 +142,30 @@ public class UserService {
                .httpStatus(HttpStatus.OK)
                .build();
 
+    }
+
+    public String deleteUser(Long userId, HttpServletRequest httpServletRequest) {
+        User user = metodHelper.idUserExist(userId);
+
+        String username = httpServletRequest.getHeader("username");
+
+        User loggedInUser = userRepository.findByUsername(username);
+
+        RoleType loggedInUserRole = loggedInUser.getUserRole().getRoleType();
+        RoleType deletedUserRole = user.getUserRole().getRoleType();
+
+        if (loggedInUser.getBuiltIn()){
+            throw new BadRequest_exception(ErrorMessages.NOT_PERMITTED);
+        }else if (loggedInUserRole == RoleType.MANAGER){
+                if (!(deletedUserRole == RoleType.STUDENT || deletedUserRole == RoleType.TEACHER || deletedUserRole == RoleType.ASSISTANT_MANAGER)){
+                    throw new BadRequest_exception(ErrorMessages.NOT_PERMITTED);
+                }
+            } else if (loggedInUserRole == RoleType.ASSISTANT_MANAGER){
+            if (!(deletedUserRole == RoleType.STUDENT || deletedUserRole == RoleType.TEACHER)){
+                throw new BadRequest_exception(ErrorMessages.NOT_PERMITTED);
+            }
+        }
+        userRepository.deleteById(userId);
+        return SuccesMessages.USER_DELETE;
     }
 }
