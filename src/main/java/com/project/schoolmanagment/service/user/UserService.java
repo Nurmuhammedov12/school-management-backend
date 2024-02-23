@@ -122,12 +122,23 @@ public class UserService {
 
     }
 
-    public ResponseEntity<ResponseMessage<BaseUserResponse>> updateAdminViceDean(Long userId, UserRequest userRequest) {
+    public ResponseMessage<BaseUserResponse> updateAdminViceDean(Long userId, UserRequest userRequest) {
         //check Id exist in database
        User user = metodHelper.idUserExist(userId);
        // check user builtIn
        metodHelper.checkBuiltIn(user);
-       return null;
+       uniquePropertyValidator.checkUniqueProperties(user, userRequest);
+       User userToSave = userMapper.mapUser(userRequest);
+       userToSave.setId(user.getId());
+       userToSave.setUserRole(user.getUserRole());
+
+       User savedUser = userRepository.save(userToSave);
+
+       return ResponseMessage.<BaseUserResponse>builder()
+               .message(SuccesMessages.USER_UPDATE_MESSAGE)
+               .object(userMapper.mapperResponseUser(savedUser))
+               .httpStatus(HttpStatus.OK)
+               .build();
 
     }
 }
