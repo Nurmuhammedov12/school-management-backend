@@ -13,6 +13,7 @@ import com.project.schoolmanagment.payload.response.abstracts.BaseUserResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.payload.response.user.UserResponse;
 import com.project.schoolmanagment.repository.user.UserRepository;
+import com.project.schoolmanagment.service.helper.MetodHelper;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRoleService roleService;
     private final PageableHelper pageableHelper;
+    private final MetodHelper metodHelper;
 
 
     public ResponseMessage<UserResponse> saveUser(UserRequest userRequest, String userRole) {
@@ -94,8 +96,29 @@ public class UserService {
 
     }
 
-    public ResponseEntity<Map<String, String>> updateUser(UserWithoutPasswordRequest userWithoutPassword, HttpServletRequest servletRequest) {
-    User user = (User) servletRequest.getAttribute("username");
+    public ResponseEntity<String> updateUser(UserWithoutPasswordRequest userWithoutPassword, HttpServletRequest servletRequest) {
+    String username = (String) servletRequest.getAttribute("username");
+    User user = userRepository.findByUsername(username);
+
+    //checkBuiltIn
+
+        metodHelper.checkBuiltIn(user);
+
+        // uniquennes
+        uniquePropertyValidator.checkUniqueProperties(user, userWithoutPassword);
+
+        user.setName(userWithoutPassword.getName());
+        user.setSurname(userWithoutPassword.getSurname());
+        user.setUsername(userWithoutPassword.getUsername());
+        user.setBirthDay(userWithoutPassword.getBirthDay());
+        user.setBirthPlace(userWithoutPassword.getBirthPlace());
+        user.setEmail(userWithoutPassword.getEmail());
+        user.setPhoneNumber(userWithoutPassword.getPhoneNumber());
+        user.setGender(userWithoutPassword.getGender());
+        user.setSsn(userWithoutPassword.getSsn());
+
+        userRepository.save(user);
+        return  ResponseEntity.ok(SuccesMessages.USER_UPDATE_MESSAGE);
 
 
     }

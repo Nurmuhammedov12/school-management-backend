@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @PatchMapping("/updateUser")
-    public ResponseEntity<Map<String, String>> updateUser(@RequestBody @Valid
+    public ResponseEntity<String> updateUser(@RequestBody @Valid
                                                               UserWithoutPasswordRequest userWithoutPassword,
                                                           HttpServletRequest servletRequest){
 
