@@ -96,7 +96,7 @@ public class UserService {
 
     }
 
-    public ResponseEntity<Map<String, String>> updateUser(UserWithoutPasswordRequest userWithoutPassword, HttpServletRequest servletRequest) {
+    public ResponseEntity<String> updateUser(UserWithoutPasswordRequest userWithoutPassword, HttpServletRequest servletRequest) {
     String username = (String) servletRequest.getAttribute("username");
     User user = userRepository.findByUsername(username);
 
@@ -105,7 +105,20 @@ public class UserService {
         metodHelper.checkBuiltIn(user);
 
         // uniquennes
+        uniquePropertyValidator.checkUniqueProperties(user, userWithoutPassword);
 
+        user.setName(userWithoutPassword.getName());
+        user.setSurname(userWithoutPassword.getSurname());
+        user.setUsername(userWithoutPassword.getUsername());
+        user.setBirthDay(userWithoutPassword.getBirthDay());
+        user.setBirthPlace(userWithoutPassword.getBirthPlace());
+        user.setEmail(userWithoutPassword.getEmail());
+        user.setPhoneNumber(userWithoutPassword.getPhoneNumber());
+        user.setGender(userWithoutPassword.getGender());
+        user.setSsn(userWithoutPassword.getSsn());
+
+        userRepository.save(user);
+        return  ResponseEntity.ok(SuccesMessages.USER_UPDATE_MESSAGE);
 
 
     }
