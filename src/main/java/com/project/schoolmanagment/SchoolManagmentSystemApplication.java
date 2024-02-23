@@ -21,7 +21,6 @@ public class SchoolManagmentSystemApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(SchoolManagmentSystemApplication.class, args);
 	}
-
 	@Override
 	public void run(String... args) throws Exception {
 		if (userRoleService.getAllUserRole().isEmpty()){
