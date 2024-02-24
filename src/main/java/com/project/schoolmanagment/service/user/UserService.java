@@ -43,6 +43,7 @@ public class UserService {
     private final MetodHelper metodHelper;
 
 
+    // Save User method
     public ResponseMessage<UserResponse> saveUser(UserRequest userRequest, String userRole) {
        // we need a validator
         uniquePropertyValidator.checkDuplicate(
@@ -72,11 +73,13 @@ public class UserService {
             .build();
     }
 
+    //Pageable method
     public Page<UserResponse> getUserByPage(int page, int size, String sort, String type, String userRole) {
         Pageable pageable = pageableHelper.getPageableWithProperties(size, page, type, sort);
         return userRepository.findByUserRole(userRole, pageable).map(userMapper::mapperResponseUser);
     }
 
+    // FindByUser Id
     public ResponseMessage<BaseUserResponse> findUserById(Long userId) {
         // need check id is given id has in database
         User user = userRepository.findById(userId).orElseThrow(
@@ -89,6 +92,8 @@ public class UserService {
                 .build();
     }
 
+
+    // Get User By Username
     public List<UserResponse> getUserByUserName(String userName) {
 
         return userRepository.getUserByNameContaining(userName)
@@ -98,6 +103,7 @@ public class UserService {
 
     }
 
+    // Update User
     public ResponseEntity<String> updateUser(UserWithoutPasswordRequest userWithoutPassword, HttpServletRequest servletRequest) {
     String username = (String) servletRequest.getHeader("username");
     User user = userRepository.findByUsername(username);
@@ -106,7 +112,7 @@ public class UserService {
 
         metodHelper.checkBuiltIn(user);
 
-        // uniquennes
+        // Uniqueness
         uniquePropertyValidator.checkUniqueProperties(user, userWithoutPassword);
 
         user.setName(userWithoutPassword.getName());
@@ -124,6 +130,7 @@ public class UserService {
 
     }
 
+    // Update Admin Vice Dean and Teacher
     public ResponseMessage<BaseUserResponse> updateAdminViceDean(Long userId, UserRequest userRequest) {
         //check Id exist in database
        User user = metodHelper.idUserExist(userId);
@@ -141,9 +148,9 @@ public class UserService {
                .object(userMapper.mapperResponseUser(savedUser))
                .httpStatus(HttpStatus.OK)
                .build();
-
     }
 
+    // Delete User
     public String deleteUser(Long userId, HttpServletRequest httpServletRequest) {
         User user = metodHelper.idUserExist(userId);
 
