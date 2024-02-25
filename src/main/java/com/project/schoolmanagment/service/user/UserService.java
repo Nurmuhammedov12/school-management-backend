@@ -105,7 +105,7 @@ public class UserService {
 
     // Update User
     public ResponseEntity<String> updateUser(UserWithoutPasswordRequest userWithoutPassword, HttpServletRequest servletRequest) {
-    String username = (String) servletRequest.getHeader("username");
+    String username = (String) servletRequest.getAttribute("username");
     User user = userRepository.findByUsername(username);
 
     //checkBuiltIn
@@ -154,7 +154,7 @@ public class UserService {
     public String deleteUser(Long userId, HttpServletRequest httpServletRequest) {
         User user = metodHelper.idUserExist(userId);
 
-        String username = httpServletRequest.getHeader("username");
+        String username = (String) httpServletRequest.getAttribute("username");
 
         User loggedInUser = userRepository.findByUsername(username);
 
