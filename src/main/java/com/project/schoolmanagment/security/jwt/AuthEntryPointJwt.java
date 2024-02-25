@@ -20,7 +20,8 @@ public class AuthEntryPointJwt  implements AuthenticationEntryPoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
         LOGGER.error("Unauthorized error : {}" , authException.getMessage());
         //we are setting the response type for our custom error
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -13,8 +13,19 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class UserDetailServiceImpl implements UserDetailsService {
-
+    /**
+     * The UserDetailServiceImpl class implements the UserDetailsService interface and is responsible
+     * for loading user details by username.
+     */
     private final MetodHelper metodHelper;
+
+    /**
+     * Loads user details by username.
+     *
+     * @param username the username of the user
+     * @return the UserDetails object with user details
+     * @throws UsernameNotFoundException if the user is not found
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = metodHelper.loadUserByName(username);
@@ -26,7 +37,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
             user.getIsAdvisor(),
             user.getPassword(),
             user.getSsn(),
-            user.getUserRole().getRoleType().getName()
-    );
+            user.getUserRole().getRoleType().getName());
     }
 }

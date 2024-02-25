@@ -39,8 +39,8 @@ public class AuthenticationService {
         //Validated authentication info is uploaded to Security Context
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // create JWT for USer
-        String token = "Bearer " + authentication;
+        // create JWT for user
+        String token = jwtUtils.generateJwtToken(authentication);
 
         //get all info for user
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -52,9 +52,10 @@ public class AuthenticationService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
-        // user can have nur ein role we get from role collection
+        // user can have nur ein role und wir bekommen einen role von collection
         String userRole = roles.stream().findFirst().get();
 
+        // different way of using builder DP(design Pattern)
         AuthResponse.AuthResponseBuilder responseBuilder = AuthResponse.builder();
         responseBuilder.username(userDetails.getUsername());
         responseBuilder.token(token);
