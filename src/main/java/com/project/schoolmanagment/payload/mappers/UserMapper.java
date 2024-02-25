@@ -4,12 +4,18 @@ import com.project.schoolmanagment.entity.concretes.user.User;
 import com.project.schoolmanagment.payload.request.abstracts.BaseUserRequest;
 import com.project.schoolmanagment.payload.request.user.UserRequest;
 import com.project.schoolmanagment.payload.response.user.UserResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
 
+    private final PasswordEncoder passwordEncoder;
+
     public User mapUser(BaseUserRequest user){
+
         return User.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
@@ -20,7 +26,7 @@ public class UserMapper {
                 .gender(user.getGender())
                 .builtIn(user.getBuildIn())
                 .birthPlace(user.getBirthPlace())
-                .password(user.getPassword())
+                .password(passwordEncoder.encode(user.getPassword()))
                 .phoneNumber(user.getPhoneNumber())
                 .isAdvisor(false)
                 .build();
