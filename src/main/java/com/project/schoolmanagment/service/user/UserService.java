@@ -175,4 +175,8 @@ public class UserService {
         userRepository.deleteById(userId);
         return SuccesMessages.USER_DELETE;
     }
+
+    public List<User> allUser(){
+        return userRepository.findAll();
+    }
 }
