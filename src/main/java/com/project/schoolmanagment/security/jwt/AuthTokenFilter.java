@@ -34,7 +34,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthTokenFilter.class);
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         try{
             // 1) from every request we will get JWT
@@ -44,13 +45,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)){
 
                 // 3) we need username for to get data
-                String username = jwtUtils.getUsernameFromJwtToken(jwt);
+                String userName = jwtUtils.getUsernameFromJwtToken(jwt);
 
                 // 4) check DB and find the user and upgrade it with userDetails
-                UserDetails userDetails = userDetailService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailService.loadUserByUsername(userName);
 
                 // 5) we are setting attribute prop with username
-                request.setAttribute("username", username);
+                request.setAttribute("username",userName);
 
                 // 6) we have (user details) object then we have to send this information to SECURITY CONTEXT
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
@@ -70,8 +71,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     // Take from Header JWT token of User
     private String parseJwt(HttpServletRequest request){
 
-        String headerAuth = request.getHeader("Authorized");
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer: ")){
+        String headerAuth = request.getHeader("Authorization");
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")){
             return headerAuth.substring(7);
         }
         return null;

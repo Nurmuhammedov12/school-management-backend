@@ -31,6 +31,7 @@ public class WebSecurityConfig {
 
     private final AuthEntryPointJwt authEntryPointJwt;
 
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         //CORS (Cross-Origin Resource Sharing) and CSRF (Cross-Site Request Forgery) is disabled
         http.cors().and()
@@ -48,18 +49,18 @@ public class WebSecurityConfig {
         //configure the authentication provider
         http.authenticationProvider(daoAuthenticationProvider());
         //configure JWT token handling
-        http.addFilterBefore(authJWTTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
+        http.addFilterBefore(authJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
-    public AuthTokenFilter authJWTTokenFilter(){
+    public AuthTokenFilter authJwtTokenFilter(){
         return new AuthTokenFilter();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration) throws Exception{
+    public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration)
+            throws Exception{
         return configuration.getAuthenticationManager();
     }
 
