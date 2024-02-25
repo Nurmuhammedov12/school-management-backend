@@ -92,7 +92,6 @@ public class WebSecurityConfig {
         };
     }
 
-
     /**
      * list of end-points that will be filtered for security
      */
