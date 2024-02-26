@@ -11,6 +11,7 @@ import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +44,7 @@ public class UserController {
         return new ResponseEntity<>(userResponsePage, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('Admin')")
     @GetMapping("/getUserById/{userId}")
     public ResponseMessage<BaseUserResponse> getUserById(@PathVariable("userId") Long userId){
         return userService.findUserById(userId);
