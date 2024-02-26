@@ -4,6 +4,7 @@ import com.project.schoolmanagment.payload.messages.SuccesMessages;
 import com.project.schoolmanagment.payload.request.Authentication.LoginRequest;
 import com.project.schoolmanagment.payload.request.Authentication.UpdatePasswordRequest;
 import com.project.schoolmanagment.payload.response.authentication.AuthResponse;
+import com.project.schoolmanagment.payload.response.user.UserResponse;
 import com.project.schoolmanagment.service.user.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +30,10 @@ public class AuthenticationController {
                                                  HttpServletRequest httpServletRequest){
         authenticationService.updatePassword(updatePasswordRequest, httpServletRequest);
         return ResponseEntity.ok(SuccesMessages.USER_UPDATE_PASSWORD);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<UserResponse> findByUsername(HttpServletRequest httpServletRequest){
+        return ResponseEntity.ok(authenticationService.findbyUsername(httpServletRequest));
     }
 }

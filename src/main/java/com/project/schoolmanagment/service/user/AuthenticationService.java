@@ -8,11 +8,13 @@ import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.payload.request.Authentication.LoginRequest;
 import com.project.schoolmanagment.payload.request.Authentication.UpdatePasswordRequest;
 import com.project.schoolmanagment.payload.response.authentication.AuthResponse;
+import com.project.schoolmanagment.payload.response.user.UserResponse;
 import com.project.schoolmanagment.repository.user.UserRepository;
 import com.project.schoolmanagment.security.jwt.JwtUtils;
 import com.project.schoolmanagment.security.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -89,5 +91,12 @@ public class AuthenticationService {
 
         userRepository.save(user);
 
+    }
+
+
+    public UserResponse findbyUsername(HttpServletRequest httpServletRequest) {
+        String username = (String) httpServletRequest.getAttribute("username");
+        User user = userRepository.findByUsername(username);
+        return userMapper.mapperResponseUser(user);
     }
 }
