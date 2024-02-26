@@ -25,7 +25,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
+   @Autowired
     private JwtUtils jwtUtils;
 
     @Autowired
