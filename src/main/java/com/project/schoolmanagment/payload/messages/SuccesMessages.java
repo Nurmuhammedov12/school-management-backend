@@ -10,4 +10,6 @@ public class SuccesMessages {
     public static final String USER_DELETE = "User is deleted successfully";
     public static final String USER_UPDATE = "your information has been updated successfully";
     public static final String USER_UPDATE_MESSAGE = "User is Updated Successfully";
+
+    public static final String USER_UPDATE_PASSWORD = "User Password Updated Successfully";
 }
