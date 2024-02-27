@@ -5,6 +5,7 @@ import com.project.schoolmanagment.payload.response.businnes.LessonResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.service.buisnes.LessonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +35,16 @@ public class LessonController {
     public ResponseMessage<LessonResponse> getLessonByName(@RequestParam(name = "name") String lessonName){
         return lessonService.getLessonByName(lessonName);
     }
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @GetMapping("/findLessonByPage")
+    public Page<LessonResponse> findLessonByPage(
+            @RequestParam(name = "page", value = "0") int page,
+            @RequestParam(name = "size", value = "10") int size,
+            @RequestParam(name = "sort", value = "lessonName") String sort,
+            @RequestParam(name = "type", value = "desc") String type){
+        return lessonService.findLessonByPage(page, size, sort, type);
+    }
+
 
 }

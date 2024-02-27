@@ -9,7 +9,10 @@ import com.project.schoolmanagment.payload.request.buisnes.LessonRequest;
 import com.project.schoolmanagment.payload.response.businnes.LessonResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.repository.buisnes.LessonRepository;
+import com.project.schoolmanagment.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,9 @@ public class LessonService {
 
     private final LessonRepository lessonRepository;
     private final LessonMapper lessonMapper;
+    private final PageableHelper pageableHelper;
+
+
 
     public ResponseMessage<LessonResponse> saveLesson(LessonRequest lessonRequest) {
         //lessons must be unique
@@ -66,5 +72,13 @@ public class LessonService {
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .build();
         }
+    }
+
+
+    public Page<LessonResponse> findLessonByPage(int page, int size, String sort, String type) {
+        Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
+        return lessonRepository
+                .findAll(pageable)
+                .map(lessonMapper::mapLessonToLessonResponse);
     }
 }
