@@ -6,6 +6,7 @@ import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.service.buisnes.EducationTermService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,5 +51,10 @@ public class EducationTermController {
     return educationTermService.getAllByPage(page,size,sort,type);
     }
 
+    @PreAuthorize("hasAnyAuthority('Admin', 'Dean', 'ViceDean', 'Teacher')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseMessage<String> deleteEducationTermById(@PathVariable Long id){
+        return educationTermService.deleteById(id);
+    }
 
 }

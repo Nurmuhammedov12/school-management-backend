@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -101,5 +102,15 @@ public class EducationTermService {
     public Page<EducationTermResponse> getAllByPage(int page, int size, String sort, String type) {
         Pageable pageable = pageableHelper.getPageableWithProperties(size,page,type,sort);
         return educationTermRepository.findAll(pageable).map(educationTermMapper::mapEducationTermToEducationTermResponse);
+    }
+
+    public ResponseMessage<String> deleteById(Long id) {
+        EducationTerm deleteTerm =isEducationTerm(id);
+        educationTermRepository.delete(deleteTerm);
+        return ResponseMessage.<String>builder()
+                .message(SuccesMessages.EDUCATION_TERM_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+
     }
 }
