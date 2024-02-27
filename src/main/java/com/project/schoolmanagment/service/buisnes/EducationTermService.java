@@ -11,8 +11,12 @@ import com.project.schoolmanagment.payload.request.buisnes.EducationTermRequest;
 import com.project.schoolmanagment.payload.response.businnes.EducationTermResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.repository.buisnes.EducationTermRepository;
+import com.project.schoolmanagment.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +25,7 @@ public class EducationTermService {
 
     private final EducationTermRepository educationTermRepository;
     private final EducationTermMapper educationTermMapper;
+    private final PageableHelper pageableHelper;
 
 
     public ResponseMessage<EducationTermResponse> saveEducationTerm(EducationTermRequest educationTermRequest) {
@@ -85,4 +90,46 @@ public class EducationTermService {
         }
     }
 
+    public EducationTermResponse findById(Long id) {
+        EducationTerm educationTerm = isEducationTerm(id);
+        return educationTermMapper.mapEducationTermToEducationTermResponse(educationTerm);
+    }
+
+    private EducationTerm isEducationTerm(Long id){
+        return educationTermRepository.findById(id).orElseThrow(()-> new NotFoundExceptions(String.format(ErrorMessages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id)));
+    }
+
+    public Page<EducationTermResponse> getAllByPage(int page, int size, String sort, String type) {
+        Pageable pageable = pageableHelper.getPageableWithProperties(size,page,type,sort);
+        return educationTermRepository.findAll(pageable).map(educationTermMapper::mapEducationTermToEducationTermResponse);
+    }
+
+    public ResponseMessage<String> deleteById(Long id) {
+        EducationTerm deleteTerm =isEducationTerm(id);
+        educationTermRepository.delete(deleteTerm);
+        return ResponseMessage.<String>builder()
+                .message(SuccesMessages.EDUCATION_TERM_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+
+    }
+
+    public ResponseMessage<EducationTermResponse> updateEducationTerm(Long id, EducationTermRequest educationTermRequest) {
+        EducationTerm educationTerm = isEducationTerm(id);
+
+        validateEducationTermDates(educationTermRequest);
+
+        EducationTerm updatedEducationTerm = educationTermMapper.mapEducationTermRequestToEducationTerm(educationTermRequest);
+        updatedEducationTerm.setId(educationTerm.getId());
+
+        EducationTerm bereitUpdatedEducationTerm = educationTermRepository.save(updatedEducationTerm);
+
+        EducationTermResponse responseUpdatedEducationTerm = educationTermMapper.mapEducationTermToEducationTermResponse(bereitUpdatedEducationTerm);
+
+        return ResponseMessage.<EducationTermResponse>builder()
+                .message(SuccesMessages.EDUCATION_TERM_UPDATE)
+                .object(responseUpdatedEducationTerm)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
 }
