@@ -32,4 +32,12 @@ public class ErrorMessages {
     public static final String NOT_FOUND_LESSON_IN_LIST = "Error: Lesson not found in the list" ;
     public static final String TIME_NOT_VALID_MESSAGE = "Error: incorrect time" ;
 
+
+    //lesson program
+    public static final String NOT_FOUND_LESSON_PROGRAM_MESSAGE = "Error: Lesson program with id, %s not found";
+    public static final String NOT_FOUND_LESSON_PROGRAM_MESSAGE_WITHOUT_ID_INFO = "Error: Lesson program with this field not found";
+    public static final String LESSON_PROGRAM_ALREADY_EXIST = "Error: Course schedule can not be selected for the same hour and date" ;
+
+
+
 }
