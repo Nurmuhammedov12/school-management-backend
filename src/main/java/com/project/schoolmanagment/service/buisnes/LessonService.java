@@ -38,4 +38,18 @@ public class LessonService {
             throw new NotFoundExceptions(String.format(ErrorMessages.ALREADY_CREATED_LESSON_MESSAGE, lessonName));
         }
     }
+
+   Lesson isLessonExistById(Long id){
+       return lessonRepository.findById(id).orElseThrow(
+               () -> new NotFoundExceptions(String.format(ErrorMessages.NOT_FOUND_LESSON_MESSAGE, id)));
+    }
+
+    public ResponseMessage deleteLesson(Long id) {
+        isLessonExistById(id);
+        lessonRepository.deleteById(id);
+        return ResponseMessage.builder()
+                .message(SuccesMessages.LESSON_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
 }

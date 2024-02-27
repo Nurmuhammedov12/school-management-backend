@@ -6,10 +6,7 @@ import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.service.buisnes.LessonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -24,6 +21,12 @@ public class LessonController {
     @PostMapping("/save")
     public ResponseMessage<LessonResponse> saveLesson(@RequestBody @Valid LessonRequest lessonRequest){
         return lessonService.saveLesson(lessonRequest);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseMessage deleteLesson(@PathVariable Long id){
+        return lessonService.deleteLesson(id);
     }
 
 }
