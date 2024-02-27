@@ -52,4 +52,19 @@ public class LessonService {
                 .httpStatus(HttpStatus.OK)
                 .build();
     }
+
+    public ResponseMessage<LessonResponse> getLessonByName(String lessonName) {
+        if (lessonRepository.getLessonNameEqualsIgnoreCase(lessonName).isPresent()){
+            return ResponseMessage.<LessonResponse>builder()
+                    .object(lessonMapper.mapLessonToLessonResponse(lessonRepository.getLessonNameEqualsIgnoreCase(lessonName).get()))
+                    .message(SuccesMessages.LESSON_FOUND)
+                    .httpStatus(HttpStatus.OK)
+                    .build();
+        }else {
+            return ResponseMessage.<LessonResponse>builder()
+                    .message(ErrorMessages.NOT_FOUND_LESSON_MESSAGE)
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .build();
+        }
+    }
 }

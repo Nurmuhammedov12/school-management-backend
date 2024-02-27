@@ -29,4 +29,10 @@ public class LessonController {
         return lessonService.deleteLesson(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @GetMapping("/getLessonByName")
+    public ResponseMessage<LessonResponse> getLessonByName(@RequestParam(name = "name") String lessonName){
+        return lessonService.getLessonByName(lessonName);
+    }
+
 }
