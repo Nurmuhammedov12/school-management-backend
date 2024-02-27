@@ -1,5 +1,6 @@
 package com.project.schoolmanagment.controller.buisnes;
 
+import com.project.schoolmanagment.entity.concretes.buisnes.Lesson;
 import com.project.schoolmanagment.payload.request.buisnes.LessonRequest;
 import com.project.schoolmanagment.payload.response.businnes.LessonResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
@@ -10,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/lessons")
@@ -44,6 +46,14 @@ public class LessonsController {
             @RequestParam(name = "sort", value = "lessonName") String sort,
             @RequestParam(name = "type", value = "desc") String type){
         return lessonService.findLessonByPage(page, size, sort, type);
+    }
+
+
+    //Interesting Method
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @GetMapping("/findLessonBySet")
+    public Set<Lesson> findLessonSetByIds(@RequestParam(name = "lessonIds") Set<Long> ids){
+        return lessonService.findLessonSetsById(ids);
     }
 
 

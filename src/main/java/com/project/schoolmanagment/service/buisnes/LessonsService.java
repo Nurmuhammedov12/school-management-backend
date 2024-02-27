@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class LessonsService {
@@ -29,10 +32,14 @@ public class LessonsService {
     public ResponseMessage<LessonResponse> saveLesson(LessonRequest lessonRequest) {
         //lessons must be unique
         isLessonUnique(lessonRequest.getLessonName());
+
         //map DTO -> entity
         Lesson savedLesson = lessonMapper.mapLessonRequestToLesson(lessonRequest);
+
+       Lesson saveEnd = lessonRepository.save(savedLesson);
+
         return ResponseMessage.<LessonResponse>builder()
-                .object(lessonMapper.mapLessonToLessonResponse(savedLesson))
+                .object(lessonMapper.mapLessonToLessonResponse(saveEnd))
                 .message(SuccesMessages.LESSON_SAVE)
                 .httpStatus(HttpStatus.CREATED)
                 .build();
@@ -80,5 +87,11 @@ public class LessonsService {
         return lessonRepository
                 .findAll(pageable)
                 .map(lessonMapper::mapLessonToLessonResponse);
+    }
+
+    public Set<Lesson> findLessonSetsById(Set<Long> ids) {
+        return ids.stream()
+                .map(this::isLessonExistById)
+                .collect(Collectors.toSet());
     }
 }
