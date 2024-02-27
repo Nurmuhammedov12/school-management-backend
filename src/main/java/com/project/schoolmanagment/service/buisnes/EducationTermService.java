@@ -95,7 +95,7 @@ public class EducationTermService {
         return educationTermMapper.mapEducationTermToEducationTermResponse(educationTerm);
     }
 
-    private EducationTerm isEducationTerm(Long id){
+    public EducationTerm isEducationTerm(Long id){
         return educationTermRepository.findById(id).orElseThrow(()-> new NotFoundExceptions(String.format(ErrorMessages.EDUCATION_TERM_NOT_FOUND_MESSAGE, id)));
     }
 
