@@ -113,4 +113,23 @@ public class EducationTermService {
                 .build();
 
     }
+
+    public ResponseMessage<EducationTermResponse> updateEducationTerm(Long id, EducationTermRequest educationTermRequest) {
+        EducationTerm educationTerm = isEducationTerm(id);
+
+        validateEducationTermDates(educationTermRequest);
+
+        EducationTerm updatedEducationTerm = educationTermMapper.mapEducationTermRequestToEducationTerm(educationTermRequest);
+        updatedEducationTerm.setId(educationTerm.getId());
+
+        EducationTerm bereitUpdatedEducationTerm = educationTermRepository.save(updatedEducationTerm);
+
+        EducationTermResponse responseUpdatedEducationTerm = educationTermMapper.mapEducationTermToEducationTermResponse(bereitUpdatedEducationTerm);
+
+        return ResponseMessage.<EducationTermResponse>builder()
+                .message(SuccesMessages.EDUCATION_TERM_UPDATE)
+                .object(responseUpdatedEducationTerm)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
 }
