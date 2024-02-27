@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface LessonRepository extends JpaRepository<Lesson, Long> {
-    Optional<Lesson> getLessonNameEqualsIgnoreCase(String lessonName);
+public interface LessonRepository extends JpaRepository<Lesson,Long> {
+    Optional<Lesson> getByLessonNameEqualsIgnoreCase(String lessonName);
 }

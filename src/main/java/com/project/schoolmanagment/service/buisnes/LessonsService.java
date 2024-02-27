@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LessonService {
+public class LessonsService {
 
     private final LessonRepository lessonRepository;
     private final LessonMapper lessonMapper;
@@ -40,7 +40,7 @@ public class LessonService {
     }
 
     private void isLessonUnique(String lessonName){
-        if (lessonRepository.getLessonNameEqualsIgnoreCase(lessonName).isPresent()){
+        if (lessonRepository.getByLessonNameEqualsIgnoreCase(lessonName).isPresent()){
             throw new NotFoundExceptions(String.format(ErrorMessages.ALREADY_CREATED_LESSON_MESSAGE, lessonName));
         }
     }
@@ -60,9 +60,9 @@ public class LessonService {
     }
 
     public ResponseMessage<LessonResponse> getLessonByName(String lessonName) {
-        if (lessonRepository.getLessonNameEqualsIgnoreCase(lessonName).isPresent()){
+        if (lessonRepository.getByLessonNameEqualsIgnoreCase(lessonName).isPresent()){
             return ResponseMessage.<LessonResponse>builder()
-                    .object(lessonMapper.mapLessonToLessonResponse(lessonRepository.getLessonNameEqualsIgnoreCase(lessonName).get()))
+                    .object(lessonMapper.mapLessonToLessonResponse(lessonRepository.getByLessonNameEqualsIgnoreCase(lessonName).get()))
                     .message(SuccesMessages.LESSON_FOUND)
                     .httpStatus(HttpStatus.OK)
                     .build();

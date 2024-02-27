@@ -27,7 +27,7 @@ public class Lesson {
     private  Boolean isCompulsory;
 
     //TODO lessonProgram will be added.
-    @ManyToMany(mappedBy = "lessons", cascade = CascadeType.REMOVE)
     @JsonIgnore
+    @ManyToMany(mappedBy = "lessons", cascade = CascadeType.REMOVE)
     private Set<LessonProgram> lessonPrograms; // (H)get-> null
 }

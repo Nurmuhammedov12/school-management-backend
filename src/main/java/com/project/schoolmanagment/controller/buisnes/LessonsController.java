@@ -3,7 +3,7 @@ package com.project.schoolmanagment.controller.buisnes;
 import com.project.schoolmanagment.payload.request.buisnes.LessonRequest;
 import com.project.schoolmanagment.payload.response.businnes.LessonResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
-import com.project.schoolmanagment.service.buisnes.LessonService;
+import com.project.schoolmanagment.service.buisnes.LessonsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/lesson")
+@RequestMapping("/lessons")
 @RequiredArgsConstructor
-public class LessonController {
+public class LessonsController {
 
-    private final LessonService lessonService;
+    private final LessonsService lessonService;
 
     @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
     @PostMapping("/save")
