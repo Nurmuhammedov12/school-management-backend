@@ -12,11 +12,11 @@ import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 public class LessonProgram {
 
     @Id
