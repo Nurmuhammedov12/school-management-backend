@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LessonProgramService {
+
     private final LessonProgramRepository lessonProgramRepository;
+    private final  EducationTermService educationTermService;
+    private final LessonsService lessonsService;
 
     public ResponseMessage<LessonProgramResponse> saveLessonProgram(LessonProgramRequest lessonProgramRequest) {
+
     }
 }
