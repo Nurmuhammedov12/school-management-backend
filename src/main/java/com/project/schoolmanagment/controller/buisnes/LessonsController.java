@@ -7,6 +7,7 @@ import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.service.buisnes.LessonsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,5 +57,10 @@ public class LessonsController {
         return lessonService.findLessonSetsById(ids);
     }
 
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @PostMapping("/updateLesson/{id}")
+    public ResponseEntity<LessonResponse> updateLesson(@PathVariable Long id, @RequestBody @Valid LessonRequest request){
+        return ResponseEntity.ok(lessonService.updateLesson(id, request));
+    }
 
 }

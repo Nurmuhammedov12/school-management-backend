@@ -94,4 +94,24 @@ public class LessonsService {
                 .map(this::isLessonExistById)
                 .collect(Collectors.toSet());
     }
+
+    public LessonResponse updateLesson(Long id, LessonRequest request) {
+        // Check with ID in DB
+        Lesson lessonFromDatabase = isLessonExistById(id);
+
+        // Check LessonName is Unique or not
+        if (!lessonFromDatabase.getLessonName().equals(request.getLessonName())){
+            isLessonUnique(request.getLessonName());
+        }
+
+        //mapper DTO -> DB
+        Lesson updatedLesson = lessonMapper.mapLessonRequestToLesson(request);
+        updatedLesson.setId(lessonFromDatabase.getId());
+        updatedLesson.setLessonPrograms(lessonFromDatabase.getLessonPrograms());
+        Lesson savedLesson = lessonRepository.save(updatedLesson);
+
+
+        return  lessonMapper.mapLessonToLessonResponse(savedLesson);
+
+    }
 }
