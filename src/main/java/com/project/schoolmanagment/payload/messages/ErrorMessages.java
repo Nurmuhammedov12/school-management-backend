@@ -25,4 +25,11 @@ public class ErrorMessages {
     public static final String EDUCATION_TERM_CONFLICT_MESSAGE = "Error: There is a conflict regarding the dates of the education terms.";
 
 
+    //lesson
+    public static final String ALREADY_REGISTER_LESSON_MESSAGE = "Error: Lesson with lesson name %s already registered" ;
+    public static final String ALREADY_CREATED_LESSON_MESSAGE = "Error: %s Lesson already exist";
+    public static final String NOT_FOUND_LESSON_MESSAGE = "Error: Lesson with id %s not found";
+    public static final String NOT_FOUND_LESSON_IN_LIST = "Error: Lesson not found in the list" ;
+    public static final String TIME_NOT_VALID_MESSAGE = "Error: incorrect time" ;
+
 }
