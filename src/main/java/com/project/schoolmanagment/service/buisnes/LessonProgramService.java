@@ -3,14 +3,19 @@ package com.project.schoolmanagment.service.buisnes;
 import com.project.schoolmanagment.entity.concretes.buisnes.EducationTerm;
 import com.project.schoolmanagment.entity.concretes.buisnes.Lesson;
 import com.project.schoolmanagment.entity.concretes.buisnes.LessonProgram;
+import com.project.schoolmanagment.entity.concretes.user.User;
+import com.project.schoolmanagment.entity.enums.RoleType;
+import com.project.schoolmanagment.exception.BadRequest_exception;
 import com.project.schoolmanagment.exception.NotFoundExceptions;
 import com.project.schoolmanagment.payload.mappers.LessonProgramMapper;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.payload.messages.SuccesMessages;
 import com.project.schoolmanagment.payload.request.buisnes.LessonProgramRequest;
 import com.project.schoolmanagment.payload.response.businnes.LessonProgramResponse;
+import com.project.schoolmanagment.payload.response.businnes.LessonResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.repository.buisnes.LessonProgramRepository;
+import com.project.schoolmanagment.service.helper.MetodHelper;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.validator.DateTimeValidator;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,6 +39,7 @@ public class LessonProgramService {
     private final LessonProgramMapper lessonProgramMapper;
     private final DateTimeValidator dateTimeValidator;
     private final PageableHelper pageableHelper;
+    private final MetodHelper metodHelper;
 
     public ResponseMessage<LessonProgramResponse> saveLessonProgram(LessonProgramRequest lessonProgramRequest) {
 
@@ -100,5 +107,44 @@ public class LessonProgramService {
         return lessonProgramRepository
                 .findAll(pageable)
                 .map(lessonProgramMapper::mapLessonProgramToLessonProgramResponse);
+    }
+
+    public Set<LessonProgram>getLessonProgramById(Set<Long>lessonIdSet){
+        Set<LessonProgram>lessonProgramSet = lessonProgramRepository.getLessonProgramByIdList(lessonIdSet);
+        if(lessonProgramSet.isEmpty()){
+            throw new BadRequest_exception(ErrorMessages.NOT_FOUND_LESSON_PROGRAM_MESSAGE_WITHOUT_ID_INFO);
+        }
+        return lessonProgramSet;
+    }
+
+    public Set<LessonProgramResponse> getLessonProgrammByTeacherName(HttpServletRequest httpServletRequest) {
+        String username = (String) httpServletRequest.getAttribute("username");
+        return  lessonProgramRepository.getByTeacherName(username)
+                .stream()
+                .map(lessonProgramMapper::mapLessonProgramToLessonProgramResponse)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<LessonProgramResponse> getAllByTeacherId(Long id) {
+        User teacher = metodHelper.idUserExist(id);
+        metodHelper.checkRole(teacher, RoleType.TEACHER);
+
+
+        return lessonProgramRepository.findByUsers_IdEquals(id)
+                .stream()
+                .map(lessonProgramMapper::mapLessonProgramToLessonProgramResponse)
+                .collect(Collectors.toSet());
+
+    }
+
+
+    public Set<LessonProgramResponse> getAllByStudentId(Long student) {
+        User user = metodHelper.idUserExist(student);
+        metodHelper.checkRole(user, RoleType.STUDENT);
+
+        return lessonProgramRepository.findByUsers_IdEquals(student)
+                .stream()
+                .map(lessonProgramMapper::mapLessonProgramToLessonProgramResponse)
+                .collect(Collectors.toSet());
     }
 }
