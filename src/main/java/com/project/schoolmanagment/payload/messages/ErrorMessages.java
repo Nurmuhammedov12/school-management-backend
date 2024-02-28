@@ -39,5 +39,29 @@ public class ErrorMessages {
     public static final String LESSON_PROGRAM_ALREADY_EXIST = "Error: Course schedule can not be selected for the same hour and date" ;
 
 
+    //advisor teacher
+    public static final String NOT_FOUND_ADVISOR_MESSAGE = "Error: Advisor Teacher with id %s not found" ;
+    public static final String ALREADY_EXIST_ADVISOR_MESSAGE = "Error: Advisor Teacher with id %s is already exist";
+    public static final String NOT_EXIST_ADVISOR_MESSAGE = "Error: Advisor Teacher with id %s isn't exist";
+    public static final String NOT_FOUND_ADVISOR_MESSAGE_WITH_USERNAME = "Error: Advisor Teacher with username %s not found" ;
+
+    //student
+
+    public static final String NOT_FOUND_STUDENT_MESSAGE = "Error: Student with id %s not found" ;
+    public static final String NOT_FOUND_USER_WITH_ROLE_MESSAGE = "Error: The role information of the user with id %s is not role: %s" ;
+    public static final String NOT_FOUND_STUDENT_BY_USERNAME_MESSAGE = "Error: Student with username %s not found" ;
+    public static final String STUDENT_INFO_NOT_FOUND = "Error: Student Info with id %d not found" ;
+    public static final String STUDENT_INFO_NOT_FOUND_BY_STUDENT_ID= "Error: Student Info with  student id %d not found" ;
+
+    //meet
+    public static final String MEET_NOT_FOUND_MESSAGE = "Error: Meet with id %d not found" ;
+    public static final String MEET_HOURS_CONFLICT = "meet hours has conflict with existing meets";
+
+    //Teacher
+
+    public static final String NOT_FOUND_TEACHER_MESSAGE = "Error: Teacher with id %s not found" ;
+    public static final String NOT_FOUND_TEACHER_BY_USERNAME_MESSAGE = "Error: Teacher with username %s not found" ;
+
+
 
 }

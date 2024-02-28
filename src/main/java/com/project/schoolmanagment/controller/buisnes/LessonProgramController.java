@@ -1,5 +1,6 @@
 package com.project.schoolmanagment.controller.buisnes;
 
+import com.project.schoolmanagment.entity.concretes.buisnes.LessonProgram;
 import com.project.schoolmanagment.payload.request.buisnes.LessonProgramRequest;
 import com.project.schoolmanagment.payload.response.businnes.LessonProgramResponse;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
@@ -9,8 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/lessonProgram")
@@ -63,5 +66,23 @@ public class LessonProgramController {
             @RequestParam(value = "sort",defaultValue = "day") String sort,
             @RequestParam(value = "type",defaultValue = "desc") String type){
         return lessonProgramService.findLessonProgramByPage(page,size,sort,type);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Teacher')")
+    @GetMapping("/getAllLessonProgramByTeacher")
+    public Set<LessonProgramResponse> getLessonProgramByTeacherName(HttpServletRequest httpServletRequest){
+        return lessonProgramService.getLessonProgrammByTeacherName(httpServletRequest);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @GetMapping("/getAllLessonProgramByTeacherId/{teacherId}")
+    public Set<LessonProgramResponse> getAllByTeacherId(@PathVariable Long id){
+        return lessonProgramService.getAllByTeacherId(id);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @GetMapping("/getAllLessonProgramByStudentId/{student}")
+    public Set<LessonProgramResponse>getAllByStudentId(@PathVariable Long student){
+        return lessonProgramService.getAllByStudentId(student);
     }
 }

@@ -1,7 +1,9 @@
 package com.project.schoolmanagment.service.helper;
 
 import com.project.schoolmanagment.entity.concretes.user.User;
+import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.BadRequest_exception;
+import com.project.schoolmanagment.exception.Conflikt;
 import com.project.schoolmanagment.exception.NotFoundExceptions;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.repository.user.UserRepository;
@@ -23,6 +25,13 @@ public class MetodHelper {
     public void checkBuiltIn(User user){
         if(user.getBuiltIn()){
             throw new BadRequest_exception(ErrorMessages.NOT_PERMITTED);
+        }
+    }
+
+
+    public void checkRole(User user, RoleType roleType){
+        if(!user.getUserRole().getRoleType().equals(roleType)){
+            throw new Conflikt(ErrorMessages.USER_ID_NOT_FOUND);
         }
     }
 
