@@ -5,6 +5,7 @@ import com.project.schoolmanagment.payload.response.businnes.LessonProgramRespon
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.service.buisnes.LessonProgramService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,5 +28,40 @@ public class LessonProgramController {
     @GetMapping("/getAll")
     public List<LessonProgramResponse> getAllLessonProgramByList(){
         return lessonProgramService.getAllByList();
+    }
+
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean','Student','Teacher')")
+    @GetMapping("/getAllUnassigned")
+    public List<LessonProgramResponse>getAllUnassigned(){
+        return lessonProgramService.getAllUnassigned();
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean','Student','Teacher')")
+    @GetMapping("/getAllAssigned")
+    public List<LessonProgramResponse>getAllAssigned(){
+        return lessonProgramService.getAllAssigned();
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @GetMapping("/getById/{id}")
+    public LessonProgramResponse getById(@PathVariable Long id){
+        return lessonProgramService.getLessonProgramById(id);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseMessage deleteById(@PathVariable Long id){
+        return lessonProgramService.deleteById(id);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean','Student','Teacher')")
+    @GetMapping("/findLessonProgramByPage")
+    public Page<LessonProgramResponse> findLessonProgramByPage(
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size",defaultValue = "10") int size,
+            @RequestParam(value = "sort",defaultValue = "day") String sort,
+            @RequestParam(value = "type",defaultValue = "desc") String type){
+        return lessonProgramService.findLessonProgramByPage(page,size,sort,type);
     }
 }
