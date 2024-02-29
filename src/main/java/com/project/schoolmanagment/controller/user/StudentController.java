@@ -21,6 +21,7 @@ import javax.validation.Valid;
 @RequestMapping("/student")
 @RequiredArgsConstructor
 public class StudentController {
+
     private final StudentService studentService;
 
     @PreAuthorize("hasAnyAuthority('Admin')")
