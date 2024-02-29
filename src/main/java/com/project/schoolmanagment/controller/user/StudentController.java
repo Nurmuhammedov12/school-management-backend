@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -25,5 +26,12 @@ public class StudentController {
     @PostMapping("/save")
     public ResponseEntity<ResponseMessage<StudentResponse>> saveStudent(@RequestBody @Valid StudentRequest studentRequest){
         return ResponseEntity.ok(studentService.saveStudent(studentRequest));
+    }
+
+    @PreAuthorize("hasAnyAuthority('Student')")
+    @PostMapping("/addLessonProgramToStudent")
+    public ResponseMessage<StudentResponse>addLessonProgram(HttpServletRequest httpServletRequest,
+                                                            @RequestBody @Valid ChooseLessonProgramRequest lessonProgramRequest){
+        return studentService.addLessonProgram(httpServletRequest,lessonProgramRequest);
     }
 }
