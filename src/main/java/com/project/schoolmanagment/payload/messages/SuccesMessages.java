@@ -42,4 +42,13 @@ public class SuccesMessages {
     public static final String MEET_UPDATE = "Meet is Updated Successfully";
     public static final String MEET_DELETE = "Meet is Deleted Successfully";
     public static final String MEET_FOUND = "Meet is Found Successfully";
+
+
+    //Teacher
+    public static final String TEACHER_SAVE = "Teacher is Saved";
+    public static final String TEACHER_UPDATE = "Teacher is Updated Successfully";
+
+    //Advisor teacher
+    public static final String ADVISOR_TEACHER_SAVE = "Advisor Teacher is Saved";
+    public static final String ADVISOR_TEACHER_DELETE = "Advisor Teacher is Deleted";
 }
