@@ -1,8 +1,10 @@
 package com.project.schoolmanagment.controller.user;
 
 
+import com.project.schoolmanagment.payload.request.buisnes.AddLessonProgramToTeacherRequest;
 import com.project.schoolmanagment.payload.request.user.TeacherRequest;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
+import com.project.schoolmanagment.payload.response.user.StudentResponse;
 import com.project.schoolmanagment.payload.response.user.UserResponse;
 import com.project.schoolmanagment.service.user.TeacherService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -45,6 +48,20 @@ public class TeacherController {
             @RequestBody @Valid TeacherRequest teacherRequest,
             @PathVariable Long userId){
         return teacherService.updateTeacherByManagers(teacherRequest,userId);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Teacher')")
+    @GetMapping("/getAllStudentByAdvisorUsername")
+    public List<StudentResponse>getAllStudentByAdvisorTeacher(HttpServletRequest httpServletRequest){
+        return teacherService.getAllStudentByAdvisorTeacher(httpServletRequest);
+    }
+
+
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @PostMapping("/addLessonProgram")
+    public ResponseMessage<UserResponse>chooseLesson(@RequestBody @Valid
+                                                     AddLessonProgramToTeacherRequest addLessonProgramToTeacherRequest){
+        return teacherService.addLessonProgramToTeacher(addLessonProgramToTeacherRequest);
     }
 
 
