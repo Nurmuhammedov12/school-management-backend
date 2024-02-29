@@ -20,7 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,5 +63,33 @@ public class TeacherService {
                 .object(userMapper.mapperResponseUser(savedTeacher))
                 .build();
 
+    }
+
+    public ResponseMessage<UserResponse> deleteAdvissorTeacherById(Long id) {
+        User teacher = methodHelper.idUserExist(id);
+        methodHelper.checkRole(teacher, RoleType.TEACHER);
+        methodHelper.isAdvisor(teacher);
+
+        teacher.setIsAdvisor(false);
+        userRepository.save(teacher);
+
+        List<User> allStudents = userRepository.findByAdvisorTeacherId(id);
+        if (!allStudents.isEmpty()){
+            allStudents.forEach(students -> students.setAdvisorTeacherId(null));
+        }
+        return ResponseMessage.<UserResponse>builder()
+                .message(SuccesMessages.ADVISOR_TEACHER_DELETE)
+                .object(userMapper.mapperResponseUser(teacher))
+                .httpStatus(HttpStatus.OK)
+                .build();
+
+
+    }
+
+    public List<UserResponse> getAllAdvisorTeacher() {
+        return userRepository.findAllBYAdvisorTeacher()
+                .stream()
+                .map(userMapper::mapperResponseUser)
+                .collect(Collectors.toList());
     }
 }

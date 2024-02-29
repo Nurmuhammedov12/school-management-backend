@@ -35,6 +35,12 @@ public class MetodHelper {
         }
     }
 
+    public void isAdvisor(User user){
+        if (!user.getIsAdvisor()){
+            throw new Conflikt(ErrorMessages.NOT_FOUND_TEACHER_MESSAGE);
+        }
+    }
+
     public  User loadUserByName(String username){
         User user = userRepository.findByUsername(username);
         if (user == null){
