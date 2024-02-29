@@ -48,5 +48,13 @@ public class TeacherController {
         return teacherService.getAllAdvisorTeacher();
     }
 
+    @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
+    @PutMapping("/update/{userId}")
+    public ResponseMessage<UserResponse>updateTeacherByManagers(
+            @RequestBody @Valid TeacherRequest teacherRequest,
+            @PathVariable Long userId){
+        return teacherService.updateTeacherByManagers(teacherRequest,userId);
+    }
+
 
 }

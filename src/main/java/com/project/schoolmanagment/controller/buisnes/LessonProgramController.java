@@ -85,4 +85,6 @@ public class LessonProgramController {
     public Set<LessonProgramResponse>getAllByStudentId(@PathVariable Long student){
         return lessonProgramService.getAllByStudentId(student);
     }
+
+
 }

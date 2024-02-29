@@ -92,4 +92,26 @@ public class TeacherService {
                 .map(userMapper::mapperResponseUser)
                 .collect(Collectors.toList());
     }
+
+
+    public ResponseMessage<UserResponse> updateTeacherByManagers(TeacherRequest teacherRequest,
+                                                                 Long userId) {
+
+        User teacher = methodHelper.idUserExist(userId);
+        methodHelper.checkRole(teacher,RoleType.TEACHER);
+        Set<LessonProgram>lessonPrograms = lessonProgramService.getLessonProgramById(teacherRequest.getLessonsProgramIdList());
+        User teacherToSave = userMapper.mapUser(teacherRequest);
+        //we are setting teacher custom properties
+        teacherToSave.setId(teacher.getId());
+        teacherToSave.setLessonProgramList(lessonPrograms);
+        teacherToSave.setUserRole(userRoleService.getUserRole(RoleType.TEACHER));
+
+        User savedTeacher = userRepository.save(teacherToSave);
+
+        return ResponseMessage.<UserResponse>builder()
+                .message(SuccesMessages.TEACHER_UPDATE)
+                .object(userMapper.mapperResponseUser(savedTeacher))
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
 }
