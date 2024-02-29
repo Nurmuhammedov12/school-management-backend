@@ -70,8 +70,6 @@ public class StudentService {
     }
 
 
-
-
     public ResponseMessage<StudentResponse> addLessonProgram(HttpServletRequest httpServletRequest,
                                                              ChooseLessonProgramRequest lessonProgramRequest) {
         String username = (String) httpServletRequest.getAttribute("username");
