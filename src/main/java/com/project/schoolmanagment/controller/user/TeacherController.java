@@ -47,4 +47,6 @@ public class TeacherController {
     public List<UserResponse> getAllAdvisorTeacher(){
         return teacherService.getAllAdvisorTeacher();
     }
+
+
 }
