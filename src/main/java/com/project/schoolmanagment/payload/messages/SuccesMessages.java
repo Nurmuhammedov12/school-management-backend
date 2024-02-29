@@ -51,4 +51,9 @@ public class SuccesMessages {
     //Advisor teacher
     public static final String ADVISOR_TEACHER_SAVE = "Advisor Teacher is Saved";
     public static final String ADVISOR_TEACHER_DELETE = "Advisor Teacher is Deleted";
+
+    //Student
+    public static final String STUDENT_SAVE = "Student is Saved";
+    public static final String STUDENT_UPDATE = "Student is Updated Successfully";
+
 }
