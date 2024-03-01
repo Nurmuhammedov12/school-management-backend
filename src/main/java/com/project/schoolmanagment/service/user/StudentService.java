@@ -149,4 +149,14 @@ public class StudentService {
 
 
     }
+
+    public ResponseMessage changeStatus(Long id, boolean status) {
+        User student = methodHelper.idUserExist(id);
+        methodHelper.checkRole(student, RoleType.STUDENT);
+        student.setActive(status);
+        return ResponseMessage.builder()
+                .message("Student is " + (status ? "active" : "passive"))
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
 }
