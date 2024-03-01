@@ -10,10 +10,7 @@ import com.project.schoolmanagment.service.user.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -46,4 +43,12 @@ public class StudentController {
         return studentService.updateStudent(studentUpdateRequestWithoutPassword, request);
 
     }
+
+    @PreAuthorize("hasAnyAuthority('')")
+    @PostMapping("/update/{id}")
+    public ResponseMessage<StudentResponse> addLessonProgram(@PathVariable Long userId,
+                                                             @RequestBody @Valid StudentRequest studentRequest){
+        return studentService.updateStudentByManager(userId,studentRequest);
+    }
+
 }

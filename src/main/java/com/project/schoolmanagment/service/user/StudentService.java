@@ -119,4 +119,34 @@ public class StudentService {
         return ResponseEntity.ok(SuccesMessages.USER_UPDATE_MESSAGE);
 
     }
+
+    public ResponseMessage<StudentResponse> updateStudentByManager(Long userId, StudentRequest studentRequest) {
+        User student = methodHelper.idUserExist(userId);
+
+        methodHelper.checkRole(student, RoleType.STUDENT);
+        uniquePropertyValidator.checkUniqueProperties(student, studentRequest);
+        User studentForUpdate = userMapper.mapUser(studentRequest);
+
+        studentForUpdate.setMotherName(studentRequest.getMotherName());
+        studentForUpdate.setFatherName(studentRequest.getFatherName());
+
+        User advisorTeacher = methodHelper.idUserExist(studentRequest.getAdvisorTeacherId());
+        methodHelper.checkRole(advisorTeacher, RoleType.TEACHER);
+        methodHelper.isAdvisor(advisorTeacher);
+
+        studentForUpdate.setUserRole(userRoleService.getUserRole(RoleType.STUDENT));
+        studentForUpdate.setActive(true);
+        studentForUpdate.setStudentNumber(student.getStudentNumber());
+        studentForUpdate.setId(student.getId());
+
+        return ResponseMessage.<StudentResponse>builder()
+                .message(SuccesMessages.STUDENT_UPDATE)
+                .object(userMapper.mapUserToStudentResponse(userRepository.save(studentForUpdate)))
+                .httpStatus(HttpStatus.OK)
+                .build();
+
+
+
+
+    }
 }
