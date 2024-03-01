@@ -2,6 +2,7 @@ package com.project.schoolmanagment.controller.user;
 
 import com.project.schoolmanagment.payload.request.buisnes.ChooseLessonProgramRequest;
 import com.project.schoolmanagment.payload.request.user.StudentRequest;
+import com.project.schoolmanagment.payload.request.user.StudentUpdateRequestWithoutPassword;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.payload.response.user.StudentResponse;
 import com.project.schoolmanagment.payload.response.user.UserResponse;
@@ -35,5 +36,14 @@ public class StudentController {
     public ResponseMessage<StudentResponse>addLessonProgram(HttpServletRequest httpServletRequest,
                                                             @RequestBody @Valid ChooseLessonProgramRequest lessonProgramRequest){
         return studentService.addLessonProgram(httpServletRequest,lessonProgramRequest);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Student')")
+    @PostMapping("/update")
+    public ResponseEntity<String> updateStudent(@RequestBody @Valid
+                                                StudentUpdateRequestWithoutPassword studentUpdateRequestWithoutPassword,
+                                                HttpServletRequest request){
+        return studentService.updateStudent(studentUpdateRequestWithoutPassword, request);
+
     }
 }
