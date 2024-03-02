@@ -21,7 +21,7 @@ public class MeetingController {
     private final MeetingService meetingService;
 
 
-    @PreAuthorize("hasAnyAuthority('Teacher")
+    @PreAuthorize("hasAnyAuthority('Teacher')")
     @PostMapping("/save")
     public ResponseMessage<MeetingResponse> saveMeeting(HttpServletRequest httpServletRequest,
                                                         @RequestBody @Valid MeetingRequest meetingRequest) {

@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class MetodHelper {
@@ -50,4 +52,7 @@ public class MetodHelper {
     }
 
 
+    public List<User>getUserList(List<Long> idList){
+        return userRepository.findByIdList(idList);
+    }
 }
