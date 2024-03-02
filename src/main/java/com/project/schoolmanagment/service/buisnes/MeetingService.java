@@ -89,4 +89,13 @@ public class MeetingService {
                 .map(meetingMapper::mapMeetToMeetingResponse)
                 .collect(Collectors.toList());
     }
+
+    public ResponseMessage deleteById(Long id) {
+        Meet meet = meetingHelper.isMeetingExistById(id);
+        meetingRepository.delete(meet);
+        return ResponseMessage.builder()
+                .message(SuccesMessages.MEET_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
 }
