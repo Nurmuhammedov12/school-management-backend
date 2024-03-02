@@ -2,6 +2,7 @@ package com.project.schoolmanagment.service.buisnes;
 
 import com.project.schoolmanagment.entity.concretes.buisnes.Meet;
 import com.project.schoolmanagment.entity.concretes.user.User;
+import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.payload.mappers.MeetingMapper;
 import com.project.schoolmanagment.payload.messages.SuccesMessages;
 import com.project.schoolmanagment.payload.request.buisnes.MeetingRequest;
@@ -97,5 +98,16 @@ public class MeetingService {
                 .message(SuccesMessages.MEET_DELETE)
                 .httpStatus(HttpStatus.OK)
                 .build();
+    }
+
+    public List<MeetingResponse> getAllMeetingsByLoggedInTeacher(HttpServletRequest httpServletRequest) {
+        String username = (String) httpServletRequest.getAttribute("username");
+        User teacher = metodHelper.loadUserByName(username);
+        metodHelper.checkRole(teacher, RoleType.TEACHER);
+
+        return meetingRepository.getByAdvisoryTeacher_IdEquals(teacher.getId())
+                .stream()
+                .map(meetingMapper::mapMeetToMeetingResponse)
+                .collect(Collectors.toList());
     }
 }
