@@ -2,10 +2,10 @@ package com.project.schoolmanagment.service.helper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.awt.print.Pageable;
 import java.util.Objects;
 
 @Component
@@ -17,5 +17,9 @@ public class PageableHelper {
             pageable =  PageRequest.of(page,size, Sort.by(sort).descending());
         }
         return pageable;
+    }
+
+    public Pageable getPageableWithProperties(int size, int page){
+        return PageRequest.of(page,size,Sort.by("id").descending());
     }
 }
