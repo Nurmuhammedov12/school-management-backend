@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -80,5 +81,12 @@ public class MeetingService {
                 .object(meetingMapper.mapMeetToMeetingResponse(updatedMeet))
                 .httpStatus(HttpStatus.OK)
                 .build();
+    }
+
+    public List<MeetingResponse> getAll() {
+        return meetingRepository.findAll()
+                .stream()
+                .map(meetingMapper::mapMeetToMeetingResponse)
+                .collect(Collectors.toList());
     }
 }
