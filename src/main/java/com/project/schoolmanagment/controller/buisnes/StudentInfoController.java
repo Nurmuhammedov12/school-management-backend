@@ -33,4 +33,11 @@ public class StudentInfoController {
             @PathVariable Long studentInfo){
         return studentInfoService.updateStudentInfo(studentInfoUpdateRequest,studentInfo);
     }
+
+    @PreAuthorize("hasAnyAuthority('Admin','Teacher')")
+  @DeleteMapping("/delete/{studentInfo}")
+  public ResponseMessage delete(@PathVariable Long studentInfo){
+    return studentInfoService.deleteStudentInfo(studentInfo);
+  }
+  
 }
