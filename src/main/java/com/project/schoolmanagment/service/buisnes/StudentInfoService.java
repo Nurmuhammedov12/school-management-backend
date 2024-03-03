@@ -12,6 +12,7 @@ import com.project.schoolmanagment.payload.mappers.StudentInfoMapper;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.payload.messages.SuccesMessages;
 import com.project.schoolmanagment.payload.request.buisnes.StudentInfoRequest;
+import com.project.schoolmanagment.payload.request.buisnes.StudentInfoUpdateRequest;
 import com.project.schoolmanagment.payload.response.businnes.ResponseMessage;
 import com.project.schoolmanagment.payload.response.businnes.StudentInfoResponse;
 import com.project.schoolmanagment.repository.buisnes.StudentInfoRepository;
@@ -115,5 +116,8 @@ public class StudentInfoService {
         } else {
             throw new NotFoundExceptions(String.format(ErrorMessages.STUDENT_INFO_NOT_FOUND,id));
         }
+    }
+
+    public ResponseMessage<StudentInfoResponse> updateStudentInfo(StudentInfoUpdateRequest studentInfoUpdateRequest, Long studentInfo) {
     }
 }
