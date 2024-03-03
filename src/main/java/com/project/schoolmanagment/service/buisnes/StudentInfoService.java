@@ -119,5 +119,33 @@ public class StudentInfoService {
     }
 
     public ResponseMessage<StudentInfoResponse> updateStudentInfo(StudentInfoUpdateRequest studentInfoUpdateRequest, Long studentInfo) {
+        //validate lesson existence
+        Lesson lesson = lessonService.isLessonExistById(studentInfoUpdateRequest.getLessonId());
+
+        StudentInfo studentInfoExist = isStudentInfoExist(studentInfo);
+        //validate education term existence
+        EducationTerm educationTerm = educationTermService.isEducationTerm(studentInfoUpdateRequest.getEducationTermId());
+
+        Double noteAverage = calculateExamAverage(studentInfoUpdateRequest.getMidtermExam(),
+                studentInfoUpdateRequest.getFinalExam());
+
+        Note note = checkLetterGrade(noteAverage);
+
+        StudentInfo studentInfoToUpdate = studentInfoMapper.mapStudentInfoUpdateRequestToStudentInfo(
+                studentInfoUpdateRequest,
+                studentInfo,
+                lesson,
+                educationTerm,
+                note,
+                noteAverage);
+        //we are not updating teacher and student
+        studentInfoToUpdate.setStudent(studentInfoExist.getStudent());
+        studentInfoToUpdate.setTeacher(studentInfoExist.getTeacher());
+        StudentInfo updatedStudentInfo = studentInfoRepository.save(studentInfoToUpdate);
+        return ResponseMessage.<StudentInfoResponse>builder()
+                .message(SuccesMessages.STUDENT_INFO_UPDATE)
+                .httpStatus(HttpStatus.OK)
+                .object(studentInfoMapper.mapStudentInfoToStudentInfoResponse(updatedStudentInfo))
+                .build();
     }
 }
