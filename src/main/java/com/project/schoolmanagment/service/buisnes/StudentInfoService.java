@@ -20,11 +20,15 @@ import com.project.schoolmanagment.service.helper.MetodHelper;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -156,5 +160,40 @@ public class StudentInfoService {
                 .message(SuccesMessages.STUDENT_INFO_DELETE)
                 .httpStatus(HttpStatus.OK)
                 .build();
+    }
+
+    public Page<StudentInfoResponse> findStudentInfoByPage(int page, int size, String sort, String type) {
+        Pageable pageable = pageableHelper.getPageableWithProperties(size,page,type,sort);
+        return studentInfoRepository.findAll(pageable).map(studentInfoMapper::mapStudentInfoToStudentInfoResponse);
+    }
+
+    public StudentInfoResponse findStudentInfoById(Long studentInfoId) {
+        return studentInfoMapper.mapStudentInfoToStudentInfoResponse(isStudentInfoExist(studentInfoId));
+    }
+
+
+    public List<StudentInfoResponse> getByStudentId(Long studentId) {
+        User user = methodHelper.idUserExist(studentId);
+        methodHelper.checkRole(user, RoleType.STUDENT);
+
+        return studentInfoRepository.getStudentBy_id(studentId)
+                .stream()
+                .map(studentInfoMapper::mapStudentInfoToStudentInfoResponse)
+                .collect(Collectors.toList());
+    }
+
+    public Page<StudentInfoResponse> getAllByTeacher(HttpServletRequest httpServletRequest, int page, int size) {
+        String username = (String) httpServletRequest.getAttribute("username");
+        Pageable pageable =pageableHelper.getPageableWithProperties(size,page);
+        return studentInfoRepository.findAllByTeacher(username, pageable)
+                .map(studentInfoMapper::mapStudentInfoToStudentInfoResponse);
+
+    }
+
+    public Page<StudentInfoResponse> getAllByStudent(HttpServletRequest httpServletRequest, int page, int size) {
+        String studentUsername = (String) httpServletRequest.getAttribute("username");
+        Pageable pageable = pageableHelper.getPageableWithProperties(size,page);
+        return studentInfoRepository.findAllByStudent(studentUsername, pageable)
+                .map(studentInfoMapper::mapStudentInfoToStudentInfoResponse);
     }
 }
