@@ -14,6 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Table(name = "tb_studentInfo")
+@Builder
 public class StudentInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
