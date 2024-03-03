@@ -148,4 +148,13 @@ public class StudentInfoService {
                 .object(studentInfoMapper.mapStudentInfoToStudentInfoResponse(updatedStudentInfo))
                 .build();
     }
+
+    public ResponseMessage deleteStudentInfo(Long studentInfo) {
+        StudentInfo studentInfo1 = isStudentInfoExist(studentInfo);
+        studentInfoRepository.delete(studentInfo1);
+        return ResponseMessage.builder()
+                .message(SuccesMessages.STUDENT_INFO_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
 }
