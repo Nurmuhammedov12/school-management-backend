@@ -42,10 +42,10 @@ public class LessonsController {
     @PreAuthorize("hasAnyAuthority('Admin','Dean','ViceDean')")
     @GetMapping("/findLessonByPage")
     public Page<LessonResponse> findLessonByPage(
-            @RequestParam(name = "page", value = "0") int page,
-            @RequestParam(name = "size", value = "10") int size,
-            @RequestParam(name = "sort", value = "lessonName") String sort,
-            @RequestParam(name = "type", value = "desc") String type){
+            @RequestParam(name = "page") int page,
+            @RequestParam(name = "size") int size,
+            @RequestParam String sort,
+            @RequestParam(name = "type") String type){
         return lessonService.findLessonByPage(page, size, sort, type);
     }
 
