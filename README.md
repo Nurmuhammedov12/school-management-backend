@@ -296,4 +296,4 @@ The numeric average is mapped to a letter grade (`AA`, `BA`, `BB`, `CB`, `CC`, `
 
 ## License
 
-No license file is currently included in the repository. Add one (e.g. MIT) if you intend others to reuse the code.
+No license.
